@@ -1,7 +1,7 @@
 { "name" : "ravendb-client"
 , "description" : "a ravendb client for node.js"
 , "author" : "Matt Daly"
-, "version" : "0.5.2"
+, "version" : "0.5.3"
 , "license": "MIT"
 , "main" : "./index"
 , "repository" : "git://github.com/mattdaly/node-ravendb.git"

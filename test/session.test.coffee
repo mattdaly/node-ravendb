@@ -21,10 +21,14 @@ describe 'session ->', ->
       should.exist(session._conventions.GenerateDocumentKey)
 
   describe 'advanced functions ->', ->
-    it 'can check a document exists by it\'s key', ->
+    it 'can enabled optimistic concurrency', ->
       should.exist(session.Advanced.UseOptimisticConcurrency)
+      session.Advanced.UseOptimisticConcurrency = true
+      session.Advanced.UseOptimisticConcurrency.should.be.true
     it 'can check a document exists by it\'s key', ->
       should.exist(session.Advanced.exists)
+    it 'can delete a document by it\'s key', ->
+      should.exist(session.Advanced.deleteByKey)
     it 'can perform patches', ->
       should.exist(session.Advanced.patch)
 
