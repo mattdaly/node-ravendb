@@ -1,6 +1,6 @@
 node-ravendb
 ============
-A javascript based [Raven DB](http://ravendb.net/) client for node.js.
+A node.js javascript client for [Raven DB](http://ravendb.net/).
 
 Installation
 ============
