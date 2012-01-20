@@ -1,3 +1,3 @@
 exports.Store = require('./lib/store');
 exports.Document = require('./lib/objects/document');
-exports.version = '0.5.4';
+exports.version = '0.1.5';
