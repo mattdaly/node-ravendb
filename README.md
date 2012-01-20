@@ -25,9 +25,9 @@ store.initialize();
 
 var session = store.openSession();
 
-session.load('dogs/max', function (error, document) {
-  if (!error) {
-    document.age = 13;
+session.load('dogs/max', function (err, max) {
+  if (!err) {
+    max.age = 13;
     session.save();
   }
 });
