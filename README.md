@@ -16,12 +16,7 @@ Sample Usage
 ```javascript
 var raven = require('./node-ravendb');
 
-var store = new raven.Store({ 
-  host: '1.1.1.1', 
-  port: 1234, 
-  database: 'Foo' 
-});
-store.initialize();
+var store = new raven.Store({ host: '1.1.1.1', port: 1234, database: 'Foo' }).initialize();
 
 var session = store.openSession();
 
