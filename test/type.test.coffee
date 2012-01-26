@@ -1,19 +1,24 @@
 should = require 'should'
-Document = require './../lib/objects/document'
+Type = require './../lib/objects/type'
 
 describe 'document ->', ->
   describe 'creating a document type ->', ->
     it 'throws an error when no type is passed as an argument', ->
-      (-> new DocumentType()).should.throw()
+      (-> new Type()).should.throw()
     it 'throws an error when passed argument is not a string', ->
-      (-> new DocumentType(3)).should.throw()
+      (-> new Type(3)).should.throw()
 
   describe 'creating a new document ->', ->
-    Reindeer = new Document('Reindeer')
-    Reindeer::init = (@name, id, seperator, strategy) ->
+    Reindeer = new Type('Reindeer')
+    Reindeer.constructor = (@name, id, seperator, strategy) ->
       @Id(id) if id
-      @IdentityPartsSeparator(seperator) if seperator
-      @GenerateDocumentKey(strategy) if strategy
+      @IdSeparator(seperator) if seperator
+      @IdGenerationStrategy(strategy) if strategy
+
+    class Dog extends Type.Base
+      constructor: (@name) ->
+        super
+        @Id(@name)
 
     it 'sets `Raven-Clr-Type` in `@metadata` object to document type', ->
       document = new Reindeer('Rudolph')
@@ -26,18 +31,22 @@ describe 'document ->', ->
     it 'should be able to set an id using a function', ->
       document = new Reindeer('Rudolph', 'rudolph')
       document['@metadata']['@id'].should.equal('rudolph')
-    it 'should be retrieve the id using a function', ->
+    it 'should be able to retrieve the id using a function', ->
       document = new Reindeer('Rudolph', 'rudolph')
       document.Id().should.equal('rudolph')
     it 'should be able to set an identity parts separator using a function', ->
       document = new Reindeer('Rudolph', undefined, '-')
-      document['@conventions']['IdentityPartsSeparator'].should.equal('-')
-    it 'should be retrieve the identity parts separator using a function', ->
+      document['@conventions']['idSeparator'].should.equal('-')
+    it 'should be able to retrieve the identity parts separator using a function', ->
       document = new Reindeer('Rudolph', undefined, '-')
-      document.IdentityPartsSeparator().should.equal('-')
-    it 'should be able to set an document key strategy using a function', ->
+      document.IdSeparator().should.equal('-')
+    it 'should be able to set a document key strategy using a function', ->
       document = new Reindeer('Rudolph', undefined, undefined, 'guid')
-      document['@conventions']['GenerateDocumentKey'].should.equal('guid')
-    it 'should be retrieve the document key strategy using a function', ->
+      document['@conventions']['idGenerationStrategy'].should.equal('guid')
+    it 'should be able to retrieve the document key strategy using a function', ->
       document = new Reindeer('Rudolph', undefined, undefined, 'guid')
-      document.GenerateDocumentKey().should.equal('guid')
+      document.IdGenerationStrategy().should.equal('guid')
+
+    it 'using coffeescript class and extends syntax', ->
+      document = new Dog('Max')
+      document.Id().should.equal('Max')

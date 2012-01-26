@@ -1,13 +1,13 @@
 should = require 'should'
 DocumentKeyGenerator = require './../lib/util/key-generator'
-Document = require './../lib/objects/document'
+Type = require './../lib/objects/type'
 
 describe 'key generator ->', ->
-  Reindeer = new Document('Reindeer')
-  Reindeer::init = (id, seperator, strategy) ->
+  Reindeer = new Type('Reindeer')
+  Reindeer.constructor = (id, seperator, strategy) ->
     @Id(id) if id
-    @IdentityPartsSeparator(seperator) if seperator
-    @GenerateDocumentKey(strategy) if strategy
+    @IdSeparator(seperator) if seperator
+    @IdGenerationStrategy(strategy) if strategy
 
   seperator = '/'
   generator = 'auto'

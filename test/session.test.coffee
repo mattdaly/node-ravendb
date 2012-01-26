@@ -1,7 +1,7 @@
 should = require 'should'
 Store = require './../lib/store'
 Session = require './../lib/session'
-Document = require './../lib/objects/document'
+Type = require './../lib/objects/type'
 
 describe 'session ->', ->
   store = new Store({ host: 'address', port: 1234, database: 'database' })
@@ -11,30 +11,24 @@ describe 'session ->', ->
   beforeEach -> session = store.openSession()
 
   describe 'creating a session ->', ->
-    it 'newing a session object without valid arguments throws an error', ->
-      (-> new Session).should.throw()
+    it 'throws an error when newing a session with arguments', ->
+      (-> new Session({})).should.throw()
     it 'a new session opened via the store should have connection settings', ->
       should.exist(session._connection)
     it 'a new session opened via the store should have conventions', ->
-      should.exist(session._conventions)
-      should.exist(session._conventions.IdentityPartsSeparator)
-      should.exist(session._conventions.GenerateDocumentKey)
+      should.exist(session.conventions)
+      should.exist(session.conventions.idSeparator)
+      should.exist(session.conventions.idGenerationStrategy)
 
-  describe 'advanced functions ->', ->
-    it 'can enabled optimistic concurrency', ->
-      should.exist(session.Advanced.UseOptimisticConcurrency)
-      session.Advanced.UseOptimisticConcurrency = true
-      session.Advanced.UseOptimisticConcurrency.should.be.true
-    it 'can check a document exists by it\'s key', ->
-      should.exist(session.Advanced.exists)
-    it 'can delete a document by it\'s key', ->
-      should.exist(session.Advanced.deleteByKey)
-    it 'can perform patches', ->
-      should.exist(session.Advanced.patch)
+  describe 'options ->', ->
+    it 'can enable optimistic concurrency', ->
+      should.exist(session.options.useOptimisticConcurrency)
+      session.options.useOptimisticConcurrency = true
+      session.options.useOptimisticConcurrency.should.be.true
 
   describe 'storing a document ->', ->
-    Reindeer = new Document('Reindeer')
-    Reindeer::init = (@name) ->
+    Reindeer = new Type('Reindeer')
+    Reindeer.constructor = (@name) ->
         @Id(@name)
 
     session = null

@@ -1,10 +1,10 @@
 should = require 'should'
-Document = require './../lib/objects/document'
+Type = require './../lib/objects/type'
 Queryable = require './../lib/objects/queryable'
 
 describe 'queryable ->', ->
-  Reindeer = new Document('Reindeer')
-  Reindeer::init = (@name, @age) ->
+  Reindeer = new Type('Reindeer')
+  Reindeer.constructor = (@name, @age) ->
     @Id(@name)
     @breed = 'Reindeer'
 

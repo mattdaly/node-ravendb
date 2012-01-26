@@ -1,3 +1,3 @@
 exports.Store = require('./lib/store');
-exports.Document = require('./lib/objects/document');
-exports.version = '0.1.7';
+exports.Type = require('./lib/objects/type');
+exports.version = '0.2.0';

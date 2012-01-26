@@ -15,7 +15,7 @@ describe 'store ->', ->
       store._connection.database.should.equal(connection.database)
     it 'sets a conventions object on construction', ->
         store = new Store(connection)
-        store.Conventions.should.be.a('object')
+        store.conventions.should.be.a('object')
 
   describe 'initializing a store ->', ->
     store = null
@@ -25,29 +25,29 @@ describe 'store ->', ->
       Object.isFrozen(store._connection).should.be.true
     it 'calling initialize should freeze the conventions object', ->
       store.initialize()
-      Object.isFrozen(store.Conventions).should.be.true
+      Object.isFrozen(store.conventions).should.be.true
     it 'setting a convention prior to calling initialize should set it\'s value', ->
-      store.Conventions.IdentityPartsSeparator.should.equal('/')
-      store.Conventions.IdentityPartsSeparator = '-'
+      store.conventions.idSeparator.should.equal('/')
+      store.conventions.idSeparator = '-'
       store.initialize()
-      store.Conventions.IdentityPartsSeparator.should.equal('-')
+      store.conventions.idSeparator.should.equal('-')
     it 'setting a convention after calling initialize should ignore not set a new value', ->
-      store.Conventions.IdentityPartsSeparator.should.equal('/')
+      store.conventions.idSeparator.should.equal('/')
       store.initialize()
-      store.Conventions.IdentityPartsSeparator = '-'
-      store.Conventions.IdentityPartsSeparator.should.equal('/')
+      store.conventions.idSeparator = '-'
+      store.conventions.idSeparator.should.equal('/')
     it 'setting a convention prior to calling initialize should be reflected in the session', ->
-      store.Conventions.IdentityPartsSeparator.should.equal('/')
-      store.Conventions.IdentityPartsSeparator = '-'
+      store.conventions.idSeparator.should.equal('/')
+      store.conventions.idSeparator = '-'
       store.initialize()
       session = store.openSession()
-      session._conventions.IdentityPartsSeparator.should.equal('-')
+      session.conventions.idSeparator.should.equal('-')
     it 'setting a convention after calling initialize should not be reflected in the session', ->
-      store.Conventions.GenerateDocumentKey.should.equal('auto')
+      store.conventions.idGenerationStrategy.should.equal('auto')
       store.initialize()
-      store.Conventions.GenerateDocumentKey = 'guid'
+      store.conventions.idGenerationStrategy = 'guid'
       session = store.openSession()
-      session._conventions.GenerateDocumentKey.should.equal('auto')
+      session.conventions.idGenerationStrategy.should.equal('auto')
 
   describe 'requesting a session fom a store ->', ->
     store = null
@@ -58,3 +58,14 @@ describe 'store ->', ->
       store.initialize()
       session = store.openSession()
       session.should.be.an.instanceof(Session)
+
+      
+  describe 'global error handling ->', ->
+    store = null
+    beforeEach -> store = new Store(connection)
+    it 'doesn\'t add anything when invalid arguments are passed', ->
+      store.on(2)
+      store._on.should.eql({})
+    it 'adds a key and function to the handler when passed valid argumens', ->
+      store.on('error', ->)
+      should.exist(store._on.error)
