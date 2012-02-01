@@ -4,8 +4,7 @@ A node.js javascript client for [Raven DB](http://ravendb.net/).
 
 Installation
 ============
-...
-
+Not currently available on npm.
 
 Documentation
 =============
