@@ -26,3 +26,8 @@ session.load('dogs/max', function (err, max) {
   }
 });
 ```
+
+Contributors
+============
+Matt Daly http://github.com/mattdaly
+xzachtli http://github.com/xzachtli
