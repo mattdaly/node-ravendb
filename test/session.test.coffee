@@ -80,3 +80,29 @@ describe 'session ->', ->
     it 'when passed an array containing both valid and invalid objects, store should only add valid documents to the tracker', ->
       session.store([ rudolph, 2, 3 ])
       Object.keys(session._store).length.should.equal(1)
+
+  describe 'building a query ->', ->
+    it 'should build simple AND query', ->
+      queryParams =
+        name: 'max'
+        type: 'dog'
+      expect = '(name:(max) AND type:(dog))'
+      query = session._parseQueryParameters queryParams
+      query.should.equal expect
+    it 'should build simple OR query', ->
+      queryParams =
+        _or: [
+          name: 'max'
+        ,
+          type: 'dog'
+        ]
+      expect = '(name:(max) OR type:(dog))'
+      query = session._parseQueryParameters queryParams
+      query.should.equal expect
+    it 'should build complex AND and OR query parameters', ->
+      queryParams =
+        name: ['max', { name: 'rex' }, { _special_type: [{ sex: 'female', breed: 'boxer' }] } ]
+        type: ['dog', 'cat']
+      expect = '((name:(max) OR name:(rex) OR (sex:(female) AND breed:(boxer))) AND (type:(dog) OR type:(cat)))'
+      query = session._parseQueryParameters queryParams
+      query.should.equal expect
